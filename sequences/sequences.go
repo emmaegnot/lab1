@@ -30,8 +30,15 @@ func mapArray(f func(a int) int, array [3]int) [3]int {
 }
 
 func main() {
-	var mySlice = []int{1, 2, 3}
-	fmt.Println(mapSlice(addOne, mySlice))
-	var myArray = [3]int{1, 2, 3}
-	fmt.Println(mapArray(addOne, myArray))
+	var intsSlice = []int{1, 2, 3}
+	newSlice := intsSlice[1:3]
+	fmt.Println(mapSlice(square, newSlice))
+	fmt.Println(intsSlice)
+	//this happens because it's passed by reference and not by value
+
+	//fmt.Println(mapSlice(addOne, intsSlice))
+	//var intsArray = [3]int{1, 2, 3}
+	//fmt.Println(mapArray(addOne, intsArray))
+
+	fmt.Println(mapSlice(double, intsSlice))
 }
