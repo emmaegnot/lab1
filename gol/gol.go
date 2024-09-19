@@ -4,34 +4,37 @@ package main
 // returns the result
 func calculateNextState(p golParams, world [][]byte) [][]byte {
 	newWorld := [][]byte{}
-	for i := 0; i < len(world); i++ {
-		for j := 0; j < len(world[i]); j++ {
+	for y := 0; y < len(world); y++ {
+		for x := 0; x < len(world[y]); x++ {
 			//get current cell
-			cCell := world[i][j]
+			cCell := world[y][x]
 			//count adjacent alive cells
+			//this doesn't work because it goes out of bounds
+			// how can top and bottom be connected
+			// use mods?
 			alive := 0
-			if world[i-1][j-1] == 255 {
+			if world[y-1][x-1] == 255 {
 				alive++
 			}
-			if world[i][j-1] == 255 {
+			if world[y][x-1] == 255 {
 				alive++
 			}
-			if world[i+1][j-1] == 255 {
+			if world[y+1][x-1] == 255 {
 				alive++
 			}
-			if world[i-1][j] == 255 {
+			if world[y-1][x] == 255 {
 				alive++
 			}
-			if world[i+1][j] == 255 {
+			if world[y+1][x] == 255 {
 				alive++
 			}
-			if world[i-1][j+1] == 255 {
+			if world[y-1][x+1] == 255 {
 				alive++
 			}
-			if world[i][j+1] == 255 {
+			if world[y][x+1] == 255 {
 				alive++
 			}
-			if world[i+1][j+1] == 255 {
+			if world[y+1][x+1] == 255 {
 				alive++
 			}
 			//check what needs to happen with this many alive cells
@@ -47,7 +50,7 @@ func calculateNextState(p golParams, world [][]byte) [][]byte {
 				}
 			}
 			//append to list of cells to change
-			newWorld[i][j] = cCell
+			newWorld[y][x] = cCell
 		}
 	}
 	return newWorld
