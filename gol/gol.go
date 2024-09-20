@@ -3,38 +3,41 @@ package main
 // takes the current state of the world and completes one evolution
 // returns the result
 func calculateNextState(p golParams, world [][]byte) [][]byte {
-	newWorld := [][]byte{}
-	for y := 0; y < len(world); y++ {
-		for x := 0; x < len(world[y]); x++ {
+	imht := p.imageHeight
+	imwd := p.imageWidth
+	// new (outer) slice for the new world
+	newWorld := make([][]byte, imht)
+	for y := 0; y < imht; y++ {
+		// creating a slice in each element of the outer slice
+		newWorld[y] = make([]byte, imwd)
+		for x := 0; x < imwd; x++ {
 			//get current cell
 			cCell := world[y][x]
 			//count adjacent alive cells
-			//this doesn't work because it goes out of bounds
-			// how can top and bottom be connected
-			// use mods?
+			//what's wrong?
 			alive := 0
-			if world[y-1][x-1] == 255 {
+			if world[(y+imht-1)%imht][(x+imwd-1)%imwd] == 255 {
 				alive++
 			}
-			if world[y][x-1] == 255 {
+			if world[(y+imht)%imht][(x+imwd-1)%imwd] == 255 {
 				alive++
 			}
-			if world[y+1][x-1] == 255 {
+			if world[(y+imht+1)%imht][(x+imwd-1)%imwd] == 255 {
 				alive++
 			}
-			if world[y-1][x] == 255 {
+			if world[(y+imht+1)%imht][(x+imwd)%imwd] == 255 {
 				alive++
 			}
-			if world[y+1][x] == 255 {
+			if world[(y+imht+1)%imht][(x+imwd)%imwd] == 255 {
 				alive++
 			}
-			if world[y-1][x+1] == 255 {
+			if world[(y+imht-1)%imht][(x+imwd+1)%imwd] == 255 {
 				alive++
 			}
-			if world[y][x+1] == 255 {
+			if world[(y+imht)%imht][(x+imwd+1)%imwd] == 255 {
 				alive++
 			}
-			if world[y+1][x+1] == 255 {
+			if world[(y+imht+1)%imht][(x+imwd+1)%imwd] == 255 {
 				alive++
 			}
 			//check what needs to happen with this many alive cells
@@ -57,5 +60,17 @@ func calculateNextState(p golParams, world [][]byte) [][]byte {
 }
 
 func calculateAliveCells(p golParams, world [][]byte) []cell {
-	return []cell{}
+	imht := p.imageHeight
+	imwd := p.imageWidth
+	var aliveCells []cell
+	for y := 0; y < imht; y++ {
+		for x := 0; x < imwd; x++ {
+			cVal := world[y][x]
+			if cVal == 255 {
+				cCell := cell{x, y}
+				aliveCells = append(aliveCells, cCell)
+			}
+		}
+	}
+	return aliveCells
 }
