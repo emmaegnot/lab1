@@ -14,6 +14,7 @@ func calculateNextState(p golParams, world [][]byte) [][]byte {
 			//get value of current cell
 			cVal := world[y][x]
 			//count adjacent alive cells
+			//this could also be done by summing and dividing by 255 instead of having loads of if stmts
 			alive := 0
 			if world[(y+imht-1)%imht][(x+imwd-1)%imwd] == 255 {
 				alive++
@@ -40,7 +41,6 @@ func calculateNextState(p golParams, world [][]byte) [][]byte {
 				alive++
 			}
 			//check what needs to happen with this many alive cells
-			//if alive
 			if cVal == 255 {
 				if alive < 2 {
 					cVal = 0
